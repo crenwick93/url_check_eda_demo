@@ -40,7 +40,7 @@
 
     # WORKING EXAMPLE
     - name: Remediate TLS certificate issue
-      condition: event.diagnostics is defined and '"CERTIFICATE_VERIFY_FAILED"' in event.diagnostics_result
+      condition: event.diagnostics is defined and '"cannot load certificate key"' in event.diagnostics.nginx_config_error
       action:
         debug:
           msg: >
