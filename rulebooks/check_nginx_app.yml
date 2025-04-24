@@ -25,7 +25,7 @@
         run_workflow_template:
           name: snow_incident_nginx_diagnostics
           organization: Default
-          post_events: true
+          set_facts: true
           job_args:
             extra_vars:
               short_description: "{{ event.url_check.url.split('://')[1].split('/')[0] }} is down"
