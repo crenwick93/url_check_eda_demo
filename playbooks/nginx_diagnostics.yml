@@ -65,7 +65,7 @@
             {% else %}
               issues_detected
             {% endif %}
-          test_issue: " fuhjduhfuhfu idijfi cannot load certificate key"
+          test_issue: "fuhjduhfuhfu idijfi cannot load certificate key"
 
     - name: Set stats for EDA event posting
       ansible.builtin.set_stats:
