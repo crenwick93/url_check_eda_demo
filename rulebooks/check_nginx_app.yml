@@ -40,8 +40,7 @@
 
     # WORKING EXAMPLE
     - name: Remediate TLS certificate issue
-      #condition: event.diagnostics is defined #and "cannot load certificate key" in event.nginx_config_error
-      condition: "'nginx_config_error' in event"
+      condition: event.diagnostics is defined and "cannot load certificate key" in event.diagnostics.test_issue
       action:
         debug:
           msg: >
