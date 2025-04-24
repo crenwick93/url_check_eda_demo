@@ -1,6 +1,6 @@
 ---
 - name: Run diagnostics on nginx server
-  hosts: demo3.sandbox566.opentlc.com
+  hosts: "{{ target_host }}"
   become: true
   gather_facts: false
   pre_tasks:
@@ -84,3 +84,15 @@
           diagnostics_report_b64: "{{ diagnostics_report | b64encode }}"
         per_host: false
         aggregate: true
+
+###############################################################################################
+#####################  UPLOAD REPORT TO SERVICE NOW (IF REQUIRED) ############################
+- name: Upload report to ServiceNow
+  hosts: localhost
+  tasks:
+    # Attach sos report if one has been generated
+    - name: Upload sos report to ServiceNow incident
+      servicenow.itsm.incident:
+        sys_id: "{{ incident_sys_id }}"
+        other:
+          work_notes: "{{ diagnostics_report }}"
