@@ -39,8 +39,8 @@
 
     # WORKING EXAMPLE
     - name: Remediate TLS certificate issue
-      #condition: event.diagnostics is defined #and '"CERTIFICATE_VERIFY_FAILED"' in event.diagnostics_result
-      condition: true
+      condition: event.diagnostics is defined
+      # and '"CERTIFICATE_VERIFY_FAILED"' in event.diagnostics_result
       action:
         debug:
           msg: >

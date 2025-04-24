@@ -3,13 +3,15 @@
   hosts: "{{ target_host }}"
   become: true
   gather_facts: false
+
   pre_tasks:
-  - name: assert that we only have one host in the play
-    ansible.builtin.assert:
-      that:
-        - ansible_play_hosts | length <= 1
-      fail_msg: 'Should only be one host in the play.'
-    run_once: true
+    - name: Ensure only one host is targeted
+      ansible.builtin.assert:
+        that:
+          - ansible_play_hosts | length <= 1
+        fail_msg: "Should only be one host in the play."
+      run_once: true
+
   tasks:
     - name: Check if nginx service is active
       ansible.builtin.systemd:
@@ -35,35 +37,65 @@
       changed_when: false
       failed_when: false
 
-    - name: Set structured diagnostics facts
+    - name: Build structured diagnostics data
+      ansible.builtin.set_fact:
+        diagnostics:
+          nginx_service_active: "{{ nginx_service_result.status.ActiveState == 'active' }}"
+          nginx_service_error: >-
+            {% if nginx_service_result.status.ActiveState != 'active' %}
+              {{ nginx_service_result.status.SubState }}
+            {% else %}
+              ''
+            {% endif %}
+          nginx_config_ok: "{{ nginx_config_result.rc == 0 }}"
+          nginx_config_error: >-
+            {% if nginx_config_result.rc != 0 %}
+              {{ nginx_config_result.stderr }}
+            {% else %}
+              ''
+            {% endif %}
+          firewall_active: "{{ firewall_result.status.ActiveState == 'active' }}"
+          firewall_port_443_open: "{{ '443/tcp' in firewall_ports_result.stdout }}"
+          overall_health: >-
+            {% if (nginx_service_result.status.ActiveState == 'active') and
+                   (nginx_config_result.rc == 0) and
+                   (firewall_result.status.ActiveState == 'active') and
+                   ('443/tcp' in firewall_ports_result.stdout) %}
+              ok
+            {% else %}
+              issues_detected
+            {% endif %}
+
+    - name: Build human-readable diagnostics report
+      ansible.builtin.set_fact:
+        diagnostics_result: |
+          ################################### EDA REPORT ############################
+
+          NGINX service active: {{ diagnostics.nginx_service_active }}
+          NGINX service error: {{ diagnostics.nginx_service_error }}
+          NGINX config test ok: {{ diagnostics.nginx_config_ok }}
+          NGINX config error: {{ diagnostics.nginx_config_error }}
+          Firewalld active: {{ diagnostics.firewall_active }}
+          Port 443 open: {{ diagnostics.firewall_port_443_open }}
+          Overall health: {{ diagnostics.overall_health }}
+
+          EDA will attempt remediation...
+
+    - name: Base64 encode diagnostics report
+      ansible.builtin.set_fact:
+        diagnostics_report_b64: "{{ diagnostics_result | b64encode }}"
+
+    - name: Set stats for EDA event posting
       ansible.builtin.set_stats:
         data:
-          diagnostics:
-            nginx_service_active: "{{ nginx_service_result.status.ActiveState == 'active' }}"
-            nginx_service_error: >-
-              {% if nginx_service_result.status.ActiveState != 'active' %}
-                {{ nginx_service_result.status.SubState }}
-              {% else %}
-                ''
-              {% endif %}
-            nginx_config_ok: "{{ nginx_config_result.rc == 0 }}"
-            nginx_config_error: >-
-              {% if nginx_config_result.rc != 0 %}
-                {{ nginx_config_result.stderr }}
-              {% else %}
-                ''
-              {% endif %}
-            firewall_active: "{{ firewall_result.status.ActiveState == 'active' }}"
-            firewall_port_443_open: "{{ '443/tcp' in firewall_ports_result.stdout }}"
-            overall_health: >-
-              {% if (nginx_service_result.status.ActiveState == 'active') and
-                     (nginx_config_result.rc == 0) and
-                     (firewall_result.status.ActiveState == 'active') and
-                     ('443/tcp' in firewall_ports_result.stdout) %}
-                ok
-              {% else %}
-                issues_detected
-              {% endif %}
+          diagnostics: "{{ diagnostics }}"
+          diagnostics_result: "{{ diagnostics_result }}"
+          diagnostics_report_b64: "{{ diagnostics_report_b64 }}"
+
+    - name: Also expose diagnostics_report for external systems
+      ansible.builtin.set_fact:
+        diagnostics_report: "{{ diagnostics_result }}"
+
 
     - name: Create readable diagnostics report
       ansible.builtin.set_fact:
