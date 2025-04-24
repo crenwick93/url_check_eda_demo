@@ -2,7 +2,7 @@
 - name: Run diagnostics on nginx server
   hosts: "{{ target_host }}"
   become: true
-  gather_facts: false
+  gather_facts: true
 
   pre_tasks:
     - name: Ensure only one host is targeted
@@ -91,6 +91,7 @@
 #####################  UPLOAD REPORT TO SERVICE NOW (IF REQUIRED) ############################
 - name: Upload report to ServiceNow
   hosts: localhost
+  gather_facts: true
   tasks:
     # Attach sos report if one has been generated
     - name: Upload sos report to ServiceNow incident
