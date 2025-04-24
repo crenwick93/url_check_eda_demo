@@ -106,4 +106,4 @@
     - name: Set stats for EDA event posting
       ansible.builtin.set_stats:
         data:
-          test: true
+          test: "true"
