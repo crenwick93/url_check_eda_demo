@@ -102,3 +102,8 @@
         sys_id: "{{ incident_sys_id }}"
         other:
           work_notes: "{{ hostvars[target_host].diagnostics_report }}"
+
+    - name: Set stats for EDA event posting
+      ansible.builtin.set_stats:
+        data:
+          test: true
