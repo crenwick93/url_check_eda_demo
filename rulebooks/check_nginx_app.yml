@@ -51,8 +51,6 @@
 
             Attempting auto remediation...
 
-            {{ event }}
-
     # FAKE EXAMPLE
     - name: Remediate nginx config error
       condition: event.diagnostics is defined and "unknown directive" in event.diagnostics_result
