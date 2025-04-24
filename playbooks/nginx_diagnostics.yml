@@ -87,6 +87,12 @@
 
           EDA will attempt remedation...
 
+    - name: Set stats for EDA event posting
+      ansible.builtin.set_stats:
+        data:
+          job_result:
+            test: "true"
+
 ###############################################################################################
 #####################  UPLOAD REPORT TO SERVICE NOW (IF REQUIRED) ############################
 - name: Upload report to ServiceNow
