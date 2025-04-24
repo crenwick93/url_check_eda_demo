@@ -40,7 +40,7 @@
     # WORKING EXAMPLE
     - name: Remediate TLS certificate issue
       #condition: event.diagnostics is defined #and '"CERTIFICATE_VERIFY_FAILED"' in event.diagnostics_result
-      condition: event is defined
+      condition: event.keys() | length > 0
       action:
         debug:
           msg: >
