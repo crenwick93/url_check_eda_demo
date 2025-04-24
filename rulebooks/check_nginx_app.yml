@@ -40,7 +40,7 @@
 
     # WORKING EXAMPLE
     - name: Remediate TLS certificate issue
-      condition: event.diagnostics is defined and event.diagnostics.test_issue contains "cannot load certificate key"
+      condition: event.diagnostics is defined and event.diagnostics.test_issue contains "cannotloadcertificatekey"
       action:
         debug:
           msg: >
