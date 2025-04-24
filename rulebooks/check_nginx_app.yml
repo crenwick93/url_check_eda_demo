@@ -6,7 +6,7 @@
         urls:
           - https://demo3.sandbox566.opentlc.com/
           # You could list lots of application URLS to watch here
-        delay: 60
+        delay: 120
         status_code: 200
         timeout: 5
         verify_ssl: false

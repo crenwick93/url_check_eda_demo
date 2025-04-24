@@ -64,8 +64,6 @@
               {% else %}
                 issues_detected
               {% endif %}
-        per_host: false
-        aggregate: true
 
     - name: Create readable diagnostics report
       ansible.builtin.set_fact:
@@ -82,13 +80,6 @@
 
 
           EDA will attempt remedation...
-
-    - name: Base64 encode the report
-      ansible.builtin.set_stats:
-        data:
-          diagnostics_report_b64: "{{ diagnostics_report | b64encode }}"
-        per_host: false
-        aggregate: true
 
 ###############################################################################################
 #####################  UPLOAD REPORT TO SERVICE NOW (IF REQUIRED) ############################
