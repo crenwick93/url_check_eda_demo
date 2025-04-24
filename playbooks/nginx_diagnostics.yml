@@ -118,5 +118,5 @@
       ansible.builtin.set_stats:
         data:
           incident_sys_id: "{{ create_incident.record.sys_id }}"
-          eda_event: "{{ original_event | default({}) }}"
+          eda_event: "{{ ansible_eda.event | default({}) }}"
           diagnostics: "{{ hostvars[target_host].diagnostics }}"
