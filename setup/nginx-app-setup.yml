@@ -1,0 +1,5 @@
+- name: Setup nginx server
+  hosts: demo-app-nginx
+  become: true
+  roles:
+    - nginx

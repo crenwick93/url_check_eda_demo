@@ -1,0 +1,12 @@
+---
+- name: Corrupt nginx config to trigger a specific error
+  hosts: demo3.sandbox566.opentlc.com
+  become: true
+  tasks:
+
+    - name: Comment out server_name directive in default.conf
+      replace:
+        path: /etc/nginx/conf.d/default.conf
+        regexp: '^\s*server_name'
+        replace: '# server_name'
+      notify: Reload nginx

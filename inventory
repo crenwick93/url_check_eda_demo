@@ -1,0 +1,4 @@
+[apps]
+demo-app-nginx ansible_host=ec2-18-133-188-246.eu-west-2.compute.amazonaws.com
+
+

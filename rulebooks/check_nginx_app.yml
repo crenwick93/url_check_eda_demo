@@ -1,0 +1,72 @@
+---
+- name: Check nginx app health and run diagnostics if unavailable
+  hosts: localhost
+  sources:
+    - ansible.eda.url_check:
+        urls:
+          - https://demo3.sandbox566.opentlc.com/
+          # You could list lots of application URLS to watch here
+        delay: 30
+        status_code: 200
+        timeout: 5
+        verify_ssl: false
+  rules:
+    - name: Debug event
+      condition: event.url_check.status == "up"
+      action:
+        debug:
+          msg: "Application is up and working as expected"
+
+###############################################################################################
+
+    - name: Create incident on ServiceNow and run diagnostics
+      condition: event.url_check.status == "down"
+      action:
+        run_workflow_template:
+          name: snow_incident_nginx_diagnostics
+          organization: Default
+          post_events: true
+          job_args:
+            extra_vars:
+              short_description: "{{ event.url_check.url.split('://')[1].split('/')[0] }} is down"
+              description: "{{ event.url_check.url.split('://')[1].split('/')[0] }} is down - EDA will run diagnostics }}"
+              impact: 1
+              urgency: 1
+              target_host: "{{ event.url_check.url.split('://')[1].split('/')[0] }}"
+
+###############################################################################################
+#### RULES BELOW WILL BE TRIGGERED ON SECOND RUN (POST_EVENTS:TRUE) IF ANY CONDITIONS MATCH ###
+
+    # WORKING EXAMPLE
+    - name: Remediate TLS certificate issue
+      condition: event.diagnostics is defined and '"CERTIFICATE_VERIFY_FAILED"' in event.diagnostics_result
+      action:
+        debug:
+          msg: >
+            A TLS certificate verification failure was detected. This may be caused by an
+            expired certificate, a self-signed certificate that is not trusted, a missing
+            root or intermediate CA, or a mismatch between the certificate and its private key.
+            Please verify the certificate chain and ensure the correct key is configured.
+
+            Attempting auto remediation...
+
+    # FAKE EXAMPLE
+    - name: Remediate nginx config error
+      condition: event.diagnostics is defined and "unknown directive" in event.diagnostics_result
+      action:
+        debug:
+          msg: >
+            The nginx configuration file contains an unknown directive, which indicates
+            a potential typo or unsupported instruction. Please verify the config for
+            syntax issues or misconfigured modules.
+
+            Attempting auto remediation...
+
+    # FAKE EXAMPLE
+    - name: Remediate database connection issue
+      condition: event.diagnostics is defined and '"could not connect to database"' in event.diagnostics_result
+      action:
+        debug:
+          msg: >
+            Could not connect to the database. Check credentials, database availability,
+            and network connectivity.

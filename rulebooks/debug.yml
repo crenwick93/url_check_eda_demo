@@ -1,0 +1,19 @@
+---
+- name: Respond to Alert Manager alerts
+  hosts: all
+  execution_strategy: parallel
+  sources:
+    - ansible.eda.url_check:
+        urls:
+          - https://demo3.sandbox566.opentlc.com/
+          # You could list lots of application URLS to watch here
+        delay: 30
+        status_code: 200
+        timeout: 5
+        verify_ssl: false
+  rules:
+    - name: output event
+      condition: event.url_check is defined
+      action:
+        debug:
+          msg: "Event received TEST: {{ event }}"
