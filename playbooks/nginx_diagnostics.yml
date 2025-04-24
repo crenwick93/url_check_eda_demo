@@ -71,10 +71,6 @@
         data:
           diagnostics: "{{ diagnostics }}"
 
-    - name: Also expose diagnostics_report for external systems
-      ansible.builtin.set_fact:
-        diagnostics_report: "{{ diagnostics_result }}"
-
     - name: Create readable diagnostics report
       ansible.builtin.set_fact:
         diagnostics_report: |
