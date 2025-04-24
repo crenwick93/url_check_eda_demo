@@ -71,7 +71,7 @@
       ansible.builtin.set_fact:
         diagnostics_report: |
           ################################### EDA REPORT ############################
-          
+
           NGINX service active: {{ nginx_service_result.status.ActiveState == 'active' }}
           NGINX service error: {{ nginx_service_result.status.SubState if nginx_service_result.status.ActiveState != 'active' else '' }}
           NGINX config test ok: {{ nginx_config_result.rc == 0 }}
@@ -79,6 +79,9 @@
           Firewalld active: {{ firewall_result.status.ActiveState == 'active' }}
           Port 443 open: {{ '443/tcp' in firewall_ports_result.stdout }}
           Overall health: {{ 'ok' if (nginx_service_result.status.ActiveState == 'active') and (nginx_config_result.rc == 0) and (firewall_result.status.ActiveState == 'active') and ('443/tcp' in firewall_ports_result.stdout) else 'issues_detected' }}
+
+
+          EDA will attempt remedation...
 
     - name: Base64 encode the report
       ansible.builtin.set_stats:
