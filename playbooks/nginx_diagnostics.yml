@@ -115,7 +115,7 @@
         msg: "TEST VALUE IS {{ test }}"
 
     - name: Set stats for EDA event posting
-      ansible.builtin.set_stats:
+      ansible.builtin.set_facts:
         data:
           job_result:
             test: "true"
