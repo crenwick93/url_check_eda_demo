@@ -107,6 +107,6 @@
           work_notes: "{{ hostvars[target_host].diagnostics_report }}"
 
     - name: Set stats for EDA event posting
-      ansible.builtin.set_facts:
+      ansible.builtin.set_fact:
         test: "true"
         cacheable: yes
