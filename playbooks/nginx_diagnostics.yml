@@ -120,3 +120,4 @@
           incident_sys_id: "{{ create_incident.record.sys_id }}"
           eda_event: "{{ ansible_eda.event | default({}) }}"
           diagnostics: "{{ hostvars[target_host].diagnostics }}"
+          nginx_config_error: "{{ hostvars[target_host].diagnostics.nginx_config_error }}"
