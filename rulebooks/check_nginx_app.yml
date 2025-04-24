@@ -39,7 +39,7 @@
 
     # WORKING EXAMPLE
     - name: Remediate TLS certificate issue
-      condition: event.job_result.test == "true"
+      condition: event.test == "true"
       # and '"CERTIFICATE_VERIFY_FAILED"' in event.diagnostics_result
       action:
         debug:
