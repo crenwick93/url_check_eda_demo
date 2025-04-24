@@ -116,6 +116,5 @@
 
     - name: Set stats for EDA event posting
       ansible.builtin.set_facts:
-        data:
-          job_result:
-            test: "true"
+        test: "true"
+        cacheable: yes
