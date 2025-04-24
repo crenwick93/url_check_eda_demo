@@ -70,6 +70,8 @@
     - name: Create readable diagnostics report
       ansible.builtin.set_fact:
         diagnostics_report: |
+          ################################### EDA REPORT ############################
+          
           NGINX service active: {{ nginx_service_result.status.ActiveState == 'active' }}
           NGINX service error: {{ nginx_service_result.status.SubState if nginx_service_result.status.ActiveState != 'active' else '' }}
           NGINX config test ok: {{ nginx_config_result.rc == 0 }}
