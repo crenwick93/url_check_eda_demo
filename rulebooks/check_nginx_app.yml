@@ -40,7 +40,7 @@
 
     # WORKING EXAMPLE
     - name: Remediate TLS certificate issue
-      condition: event.diagnostics is defined and event.diagnostics.test_issue contains "cannotloadcertificatekey"
+      condition: event.diagnostics.nginx_config_error is match(".*cannot load certificate key.*", ignorecase=true)
       action:
         debug:
           msg: >
