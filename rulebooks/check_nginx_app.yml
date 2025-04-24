@@ -23,8 +23,8 @@
     - name: Create incident on ServiceNow and run diagnostics
       condition: event.url_check.status == "down"
       action:
-        run_workflow_template:
-          name: snow_incident_nginx_diagnostics
+        run_job_template:
+          name: nginx_diagnostics
           organization: Default
           post_events: true
           job_args:
@@ -40,7 +40,7 @@
 
     # WORKING EXAMPLE
     - name: Remediate TLS certificate issue
-      condition: event.test == "true"
+      condition: event.diagnostics is defined
       # and '"CERTIFICATE_VERIFY_FAILED"' in event.diagnostics_result
       action:
         debug:

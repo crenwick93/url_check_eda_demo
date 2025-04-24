@@ -87,11 +87,6 @@
 
           EDA will attempt remedation...
 
-    - name: Set stats for EDA event posting
-      ansible.builtin.set_stats:
-        data:
-          job_result:
-            test: "true"
 
 ###############################################################################################
 #####################  UPLOAD REPORT TO SERVICE NOW (IF REQUIRED) ############################
@@ -99,14 +94,29 @@
   hosts: localhost
   gather_facts: true
   tasks:
-    # Attach sos report if one has been generated
-    - name: Upload sos report to ServiceNow incident
+    # Create ServiceNow incident and set incident_sys_id so it's accessible in workflow or rulebook
+    - name: Create a ServiceNow incident
+      servicenow.itsm.incident:
+        state: new
+        caller: "eda_user"
+        short_description: "{{ short_description }}"
+        description: "{{ description }}"
+        impact: "{{ impact }}"
+        urgency: "{{ urgency }}"
+        other:
+          correlation_id: "{{ alert_fingerprint | default('') }}"
+      register: create_incident
+
+    - name: Update ticket with report
       servicenow.itsm.incident:
         sys_id: "{{ incident_sys_id }}"
+        state: 2 # In Progress
         other:
           work_notes: "{{ hostvars[target_host].diagnostics_report }}"
 
-    - name: Set stats for EDA event posting
-      ansible.builtin.set_fact:
-        test: "true"
-        cacheable: yes
+    - name: Consolidate all facts and original event into set_stats
+      ansible.builtin.set_stats:
+        data:
+          incident_sys_id: "{{ create_incident.record.sys_id }}"
+          eda_event: "{{ original_event | default({}) }}"
+          diagnostics: "{{ hostvars[target_host].diagnostics }}"
