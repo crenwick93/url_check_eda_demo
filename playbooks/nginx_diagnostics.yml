@@ -66,36 +66,14 @@
               issues_detected
             {% endif %}
 
-    - name: Build human-readable diagnostics report
-      ansible.builtin.set_fact:
-        diagnostics_result: |
-          ################################### EDA REPORT ############################
-
-          NGINX service active: {{ diagnostics.nginx_service_active }}
-          NGINX service error: {{ diagnostics.nginx_service_error }}
-          NGINX config test ok: {{ diagnostics.nginx_config_ok }}
-          NGINX config error: {{ diagnostics.nginx_config_error }}
-          Firewalld active: {{ diagnostics.firewall_active }}
-          Port 443 open: {{ diagnostics.firewall_port_443_open }}
-          Overall health: {{ diagnostics.overall_health }}
-
-          EDA will attempt remediation...
-
-    - name: Base64 encode diagnostics report
-      ansible.builtin.set_fact:
-        diagnostics_report_b64: "{{ diagnostics_result | b64encode }}"
-
     - name: Set stats for EDA event posting
       ansible.builtin.set_stats:
         data:
           diagnostics: "{{ diagnostics }}"
-          diagnostics_result: "{{ diagnostics_result }}"
-          diagnostics_report_b64: "{{ diagnostics_report_b64 }}"
 
     - name: Also expose diagnostics_report for external systems
       ansible.builtin.set_fact:
         diagnostics_report: "{{ diagnostics_result }}"
-
 
     - name: Create readable diagnostics report
       ansible.builtin.set_fact:
