@@ -30,8 +30,6 @@
         name: nginx
         state: reloaded
 
-    - fail:
-
     # - name: Set incident_sys_id so its available on next rulebook run.
     #   ansible.builtin.set_stats:
     #     data:
