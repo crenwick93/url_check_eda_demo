@@ -73,7 +73,7 @@
 
     # Remediation will fail
     - name: Resolve or update incident
-      condition: event.job_id is defined
+      condition: event.incident_sys_id is defined
       action:
         debug:
           msg: >
