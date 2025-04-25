@@ -73,7 +73,7 @@
 
     # Remediation will fail
     - name: Resolve or update incident
-      condition: event.enriched_event.incident_sys_id is defined
+      condition: event.status is defined
       action:
         debug:
           msg: >
