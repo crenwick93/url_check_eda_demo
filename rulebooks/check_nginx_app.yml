@@ -71,6 +71,8 @@
 
                 EDA has not been successful in the attempted remediation. Please investigate.
 
+                The diagnostics report below may be of some assistance.
+
 
     # Remediation will fail
     - name: Remediate nginx config error
@@ -100,6 +102,8 @@
                 syntax issues or misconfigured modules.
 
                 EDA has not been successful in the attempted remediation. Please investigate.
+
+                The diagnostics report below may be of some assistance.
 
 
     # Remediation will fail
