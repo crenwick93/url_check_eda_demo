@@ -86,4 +86,4 @@
             EDA has successfuly remediated. Check job_template
 
             "{{ event }}"
-            "{{ ansible_facts }}"
+            "{{ facts }}"
