@@ -113,9 +113,11 @@
             extra_vars:
               incident_sys_id: "{{ event.incident_sys_id }}"
               work_notes: | # on Failure
-                ########################### EDA REMEDIATION STATUS UPDATE - FAIL ##################################
+                ########################### EDA REMEDIATION STATUS ##################################
 
-                The reported issue is not currently covered in EDAs rulebook. We recommend you investigate manually.
+                The reported issue is not currently covered in EDAs rulebook for autoremediation.
+
+                We recommend you investigate manually.
 
                 The diagnostics report below may be of some assistance.
 
