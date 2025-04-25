@@ -48,6 +48,7 @@
           name: remediate_cert_issue
           organization: Default
           post_events: true
+          set_facts: true
           job_args:
             extra_vars:
               incident_sys_id: "{{ event.incident_sys_id }}"
@@ -73,8 +74,7 @@
 
     # Remediation will fail
     - name: Resolve or update incident
-      # condition: event.enriched_event.incident_sys_id is defined
-      condition: event.meta is defined
+      condition: event.enriched_event.incident_sys_id is defined
       action:
         debug:
           msg: >
