@@ -51,7 +51,7 @@
           job_args:
             extra_vars:
               incident_sys_id: "{{ event.incident_sys_id }}"
-              target_host: "{{ event.url_check.url.split('://')[1].split('/')[0] }}"
+              target_host: "{{ event.target_host }}"
 
 
     # Remediation will fail
