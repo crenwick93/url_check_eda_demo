@@ -60,7 +60,7 @@
                 Please verify the certificate chain and ensure the correct key is configured.
 
                 EDA has successfuly remediated. Check job_template
-              fail_notes: >
+              work_notes: > # on failure
                 A TLS certificate verification failure was detected. This may be caused by an
                 expired certificate, a self-signed certificate that is not trusted, a missing
                 root or intermediate CA, or a mismatch between the certificate and its private key.
