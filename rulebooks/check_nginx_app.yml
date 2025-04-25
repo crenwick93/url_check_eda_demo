@@ -38,7 +38,7 @@
 ###############################################################################################
 #### RULES BELOW WILL BE TRIGGERED ON SECOND RUN (POST_EVENTS:TRUE) IF ANY CONDITIONS MATCH ###
 
-    # WORKING EXAMPLE
+    # Working remediation
     - name: Remediate TLS certificate issue
       condition: >
           event.diagnostics is defined and
@@ -53,9 +53,11 @@
 
             Attempting auto remediation...
 
-    # FAKE EXAMPLE
+    # Remediation will fail
     - name: Remediate nginx config error
       condition: event.diagnostics is defined and "unknown directive" in event.diagnostics_result
+          event.diagnostics is defined and
+          event.diagnostics.nginx_config_error is match(".*unknown directive.*", ignorecase=true)
       action:
         debug:
           msg: >
