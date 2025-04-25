@@ -30,13 +30,16 @@
         name: nginx
         state: reloaded
 
-    - name: Set incident_sys_id so its available on next rulebook run.
+    - name: Set incident_sys_id and preserve job metadata
       ansible.builtin.set_stats:
         data: >-
           {{
-            ansible_stats | default({}) | combine({
+            {
+              "status": ansible_job_status | default("unknown"),
+              "job_id": ansible_job_id | default("unknown"),
+              "name": ansible_job_name | default("unknown"),
               "enriched_event": {
                 "incident_sys_id": incident_sys_id
               }
-            }, recursive=True)
+            }
           }}
