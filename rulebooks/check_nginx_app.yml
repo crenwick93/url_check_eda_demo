@@ -50,7 +50,7 @@
           post_events: true
           job_args:
             extra_vars:
-              #incident_sys_id: "{{ event.incident_sys_id }}"
+              incident_sys_id: "{{ event.incident_sys_id }}"
               target_host: "{{ event.target_host }}"
 
 
