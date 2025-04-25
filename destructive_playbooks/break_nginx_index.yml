@@ -1,21 +1,11 @@
 ---
-- name: Break nginx app
+- name: Break nginx app index file
   hosts: demo-app-nginx
   become: true
   gather_facts: false
   tasks:
-    - name: Backup nginx site config (if exists)
-      ansible.builtin.copy:
-        src: /etc/nginx/nginx.conf
-        dest: /etc/nginx/nginx.conf.bak
-        remote_src: true
-      ignore_errors: true
-
-    - name: Intentionally change index to a non-existent file
-      ansible.builtin.replace:
-        path: /etc/nginx/nginx.conf
-        regexp: 'index\s+index\.html;'
-        replace: 'index missing.html;'
+    - name: Rename index.html so it can't be found
+      ansible.builtin.command: mv /usr/share/nginx/html/index.html /usr/share/nginx/html/index.html.bak
 
     - name: Reload nginx to apply changes
       ansible.builtin.service:
