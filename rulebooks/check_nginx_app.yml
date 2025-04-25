@@ -81,8 +81,6 @@
         run_workflow_template:
           name: servicenow_auto_remediate_config-issue_workflow
           organization: Default
-          post_events: true
-          set_facts: true
           job_args:
             extra_vars:
               incident_sys_id: "{{ event.incident_sys_id }}"
@@ -108,25 +106,17 @@
     - name: Not a fix for this issue - update service now
       condition: event.diagnostics is defined # defined but no known match for existing issue
       action:
-        debug:
-          msg: >
-            ISSUE UNKNOWN - UPDATE SNOW INCIDENT
+        run_job_template:
+          name: servicenow_incident_update
+          organization: Default
+          job_args:
+            extra_vars:
+              incident_sys_id: "{{ event.incident_sys_id }}"
+              work_notes: | # on Failure
+                ########################### EDA REMEDIATION STATUS UPDATE - FAIL ##################################
 
-###############################################################################################
-#### RULES BELOW WILL BE TRIGGERED ON THIRD RUN (POST_EVENTS:TRUE) to resolve or update incident ###
+                The reported issue is not currently covered in EDAs rulebook. We recommend you investigate manually.
 
-    # Remediation will fail
-    # - name: Resolve or update incident
-    #   condition: event.enriched_event.incident_sys_id is defined
-    #   action:
-    #     debug:
-    #       msg: >
-    #         A TLS certificate verification failure was detected. This may be caused by an
-    #         expired certificate, a self-signed certificate that is not trusted, a missing
-    #         root or intermediate CA, or a mismatch between the certificate and its private key.
-    #         Please verify the certificate chain and ensure the correct key is configured.
+                The diagnostics report may be of some assistance.
 
-    #         EDA has successfuly remediated. Check job_template
-
-    #         "{{ ansible_eda.event }}"
-    #         "{{ ansible_eda.facts }}"
+                ####################################################################################################
