@@ -55,7 +55,7 @@
 
     # Remediation will fail
     - name: Remediate nginx config error
-      condition: event.diagnostics is defined and "unknown directive" in event.diagnostics_result
+      condition: >
           event.diagnostics is defined and
           event.diagnostics.nginx_config_error is match(".*unknown directive.*", ignorecase=true)
       action:
