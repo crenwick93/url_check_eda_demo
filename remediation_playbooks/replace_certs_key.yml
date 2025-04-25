@@ -18,14 +18,12 @@
         src: /var/certificates/good.crt
         dest: /etc/nginx/ssl/server.crt
         remote_src: true
-      notify: reload nginx
 
     - name: Copy good TLS key from /var/certificates
       ansible.builtin.copy:
         src: /var/certificates/good.key
         dest: /etc/nginx/ssl/server.key
         remote_src: true
-      notify: reload nginx
 
     - name: reload nginx
       ansible.builtin.service:
