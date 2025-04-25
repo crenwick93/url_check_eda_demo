@@ -32,6 +32,11 @@
 
     - name: Set incident_sys_id so its available on next rulebook run.
       ansible.builtin.set_stats:
-        data:
-          enriched_event:
-            incident_sys_id: "{{ incident_sys_id }}"
+        data: >-
+          {{
+            ansible_stats | default({}) | combine({
+              "enriched_event": {
+                "incident_sys_id": incident_sys_id
+              }
+            }, recursive=True)
+          }}
