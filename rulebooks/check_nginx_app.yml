@@ -83,6 +83,18 @@
 
             Attempting auto remediation...
 
+    # Remediation will fail
+    - name: Not a known issue - update service now
+      condition: event.diagnostics is defined # defined but no known match for existing issue
+      action:
+        debug:
+          msg: >
+            The nginx configuration file contains an unknown directive, which indicates
+            a potential typo or unsupported instruction. Please verify the config for
+            syntax issues or misconfigured modules.
+
+            Attempting auto remediation...
+
 ###############################################################################################
 #### RULES BELOW WILL BE TRIGGERED ON THIRD RUN (POST_EVENTS:TRUE) to resolve or update incident ###
 
