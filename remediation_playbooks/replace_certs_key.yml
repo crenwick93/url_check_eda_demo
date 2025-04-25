@@ -30,8 +30,7 @@
         name: nginx
         state: reloaded
 
-    - name: Set incident_sys_id so its available on next rulebook run.
-      ansible.builtin.set_stats:
-        data:
-          enriched_event:
-            incident_sys_id: "{{ incident_sys_id }}"
+    # - name: Set incident_sys_id so its available on next rulebook run.
+    #   ansible.builtin.set_stats:
+    #     data:
+    #       incident_sys_id: "{{ incident_sys_id }}"
