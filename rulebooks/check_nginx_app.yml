@@ -51,7 +51,19 @@
             root or intermediate CA, or a mismatch between the certificate and its private key.
             Please verify the certificate chain and ensure the correct key is configured.
 
-            Attempting auto remediation...
+            EDA has successfuly remediated. Check job_template
+
+      action:
+        run_job_template:
+          name: servicenow_auto_remediate_cert_workflow
+          organization: Default
+          post_events: true
+          job_args:
+            extra_vars:
+              incident_sys_id: "{{ event.incident_sys_id }}"
+              target_host: "{{ event.url_check.url.split('://')[1].split('/')[0] }}"
+              on_job_fail_msg: >
+
 
     # Remediation will fail
     - name: Remediate nginx config error
@@ -67,11 +79,12 @@
 
             Attempting auto remediation...
 
-    # FAKE EXAMPLE
-    - name: Remediate database connection issue
-      condition: event.diagnostics is defined and '"could not connect to database"' in event.diagnostics_result
+###############################################################################################
+#### RULES BELOW WILL BE TRIGGERED ON THIRD RUN (POST_EVENTS:TRUE) to resolve or update incident ###
+
+    # Remediation will fail
+    - name: Remediate nginx config error
+      condition: event.job_id is defined
       action:
         debug:
-          msg: >
-            Could not connect to the database. Check credentials, database availability,
-            and network connectivity.
+          msg: "{{ event }}"

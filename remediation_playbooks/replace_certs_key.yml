@@ -31,3 +31,8 @@
       ansible.builtin.service:
         name: nginx
         state: reloaded
+
+    - name: Set incident_sys_id so its available on next rulebook run.
+      ansible.builtin.set_stats:
+        data:
+          incident_sys_id: "{{ incident_sys_id }}"
