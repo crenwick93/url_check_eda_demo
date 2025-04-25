@@ -72,7 +72,7 @@
 #### RULES BELOW WILL BE TRIGGERED ON THIRD RUN (POST_EVENTS:TRUE) to resolve or update incident ###
 
     # Remediation will fail
-    - name: Remediate nginx config error
+    - name: Resolve or update incident
       condition: event.job_id is defined
       action:
         debug:
