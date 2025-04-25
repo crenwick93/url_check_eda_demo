@@ -53,8 +53,8 @@
             extra_vars:
               incident_sys_id: "{{ event.incident_sys_id }}"
               target_host: "{{ event.target_host }}"
-              close_notes: |
-                ########################### EDA REMEDIATION STATUS UPDATE ############################
+              close_notes: | # on Success
+                ########################### EDA REMEDIATION STATUS UPDATE - SUCCESS ############################
 
                 A TLS certificate verification failure was detected. This may be caused by an
                 expired certificate, a self-signed certificate that is not trusted, a missing
@@ -62,8 +62,8 @@
                 Please verify the certificate chain and ensure the correct key is configured.
 
                 EDA has successfuly remediated. Check job_template
-              work_notes: | # on failure
-                ########################### EDA REMEDIATION STATUS UPDATE ############################
+              work_notes: | # on Failure
+                ########################### EDA REMEDIATION STATUS UPDATE - FAIL ###############################
 
                 A TLS certificate verification failure was detected. This may be caused by an
                 expired certificate, a self-signed certificate that is not trusted, a missing
