@@ -7,7 +7,7 @@
         urls:
           - https://demo3.sandbox566.opentlc.com/
           # You could list lots of application URLS to watch here
-        delay: 300
+        delay: 60
         status_code: 200
         timeout: 5
         verify_ssl: false
@@ -19,6 +19,7 @@
           msg: "Application is up and working as expected"
 
 ###############################################################################################
+############################ RUN THE DIAGNOSTICS ##############################################
 
     - name: Create incident on ServiceNow and run diagnostics
       condition: event.url_check.status == "down"
@@ -106,7 +107,7 @@
                 The diagnostics report below may be of some assistance.
 
 
-    # Remediation will fail
+    # No fix for this issue
     - name: Not a fix for this issue - update service now
       condition: event.diagnostics is defined # defined but no known match for existing issue
       action:
