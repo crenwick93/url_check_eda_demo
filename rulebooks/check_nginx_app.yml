@@ -63,7 +63,7 @@
                 expired certificate, a self-signed certificate that is not trusted, a missing
                 root or intermediate CA, or a mismatch between the certificate and its private key.
 
-                EDA has successfuly remediated.
+                EDA has replaced the cert/key pair and remediated successfuly.
               work_notes: | # on Failure
                 ########################### EDA REMEDIATION STATUS UPDATE - FAIL ###############################
 
