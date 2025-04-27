@@ -33,7 +33,7 @@
           job_args:
             extra_vars:
               short_description: "{{ event.url_check.url.split('://')[1].split('/')[0] }} is down"
-              description: "{{ event.url_check.url.split('://')[1].split('/')[0] }} is down - EDA will run diagnostics }}"
+              description: "{{ event.url_check.url.split('://')[1].split('/')[0] }} is down - EDA will run diagnostics"
               impact: 1
               urgency: 1
               target_host: "{{ event.url_check.url.split('://')[1].split('/')[0] }}"
