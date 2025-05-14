@@ -28,7 +28,7 @@
       action:
         run_job_template:
           name: nginx_diagnostics
-          organization: Default
+          organization: Demo2
           post_events: true
           job_args:
             extra_vars:
@@ -49,7 +49,7 @@
       action:
         run_workflow_template:
           name: servicenow_auto_remediate_tls-issue_workflow
-          organization: Default
+          organization: Demo2
           job_args:
             extra_vars:
               incident_sys_id: "{{ event.incident_sys_id }}"
