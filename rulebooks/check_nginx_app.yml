@@ -40,12 +40,12 @@
 
 ###############################################################################################
 #### RULES BELOW WILL BE TRIGGERED ON SECOND RUN (POST_EVENTS:TRUE) IF ANY CONDITIONS MATCH ###
+##event.diagnostics is defined and
+# event.diagnostics.nginx_config_error is match(".*cannot load certificate key.*", ignorecase=true)
 
     # Working remediation
     - name: Remediate TLS certificate issue
-      condition: >
-          event.diagnostics is defined and
-          event.diagnostics.nginx_config_error is match(".*cannot load certificate key.*", ignorecase=true)
+      condition: event.url_check.status == "up"
       action:
         run_workflow_template:
           name: servicenow_auto_remediate_tls-issue_workflow
