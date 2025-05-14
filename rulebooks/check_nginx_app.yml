@@ -47,7 +47,7 @@
           event.diagnostics is defined and
           event.diagnostics.nginx_config_error is match(".*cannot load certificate key.*", ignorecase=true)
       action:
-        run_workflow_template:
+        run_job_template:
           name: nginx_diagnostics
           organization: Demo2
           job_args:
