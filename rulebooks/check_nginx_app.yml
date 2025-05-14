@@ -42,37 +42,37 @@
 #### RULES BELOW WILL BE TRIGGERED ON SECOND RUN (POST_EVENTS:TRUE) IF ANY CONDITIONS MATCH ###
 
     # Working remediation
-    # - name: Remediate TLS certificate issue
-    #   condition: >
-    #       event.diagnostics is defined and
-    #       event.diagnostics.nginx_config_error is match(".*cannot load certificate key.*", ignorecase=true)
-    #   action:
-    #     run_workflow_template:
-    #       name: servicenow_auto_remediate_tls-issue_workflow
-    #       organization: Demo2
-    #       job_args:
-    #         extra_vars:
-    #           incident_sys_id: "{{ event.incident_sys_id }}"
-    #           target_host: "{{ event.target_host }}"
-    #           close_notes: | # on Success
-    #             ########################### EDA REMEDIATION STATUS UPDATE - SUCCESS ############################
+    - name: Remediate TLS certificate issue
+      condition: >
+          event.diagnostics is defined and
+          event.diagnostics.nginx_config_error is match(".*cannot load certificate key.*", ignorecase=true)
+      action:
+        run_workflow_template:
+          name: servicenow_auto_remediate_tls-issue_workflow1
+          organization: Demo2
+          job_args:
+            extra_vars:
+              incident_sys_id: "{{ event.incident_sys_id }}"
+              target_host: "{{ event.target_host }}"
+              close_notes: | # on Success
+                ########################### EDA REMEDIATION STATUS UPDATE - SUCCESS ############################
 
-    #             A TLS certificate verification failure was detected. This may be caused by an
-    #             expired certificate, a self-signed certificate that is not trusted, a missing
-    #             root or intermediate CA, or a mismatch between the certificate and its private key.
+                A TLS certificate verification failure was detected. This may be caused by an
+                expired certificate, a self-signed certificate that is not trusted, a missing
+                root or intermediate CA, or a mismatch between the certificate and its private key.
 
-    #             EDA has replaced the cert/key pair and remediated successfully.
-    #           work_notes: | # on Failure
-    #             ########################### EDA REMEDIATION STATUS UPDATE - FAIL ###############################
+                EDA has replaced the cert/key pair and remediated successfully.
+              work_notes: | # on Failure
+                ########################### EDA REMEDIATION STATUS UPDATE - FAIL ###############################
 
-    #             A TLS certificate verification failure was detected. This may be caused by an
-    #             expired certificate, a self-signed certificate that is not trusted, a missing
-    #             root or intermediate CA, or a mismatch between the certificate and its private key.
-    #             Please verify the certificate chain and ensure the correct key is configured.
+                A TLS certificate verification failure was detected. This may be caused by an
+                expired certificate, a self-signed certificate that is not trusted, a missing
+                root or intermediate CA, or a mismatch between the certificate and its private key.
+                Please verify the certificate chain and ensure the correct key is configured.
 
-    #             EDA has not been successful in the attempted remediation. Please investigate.
+                EDA has not been successful in the attempted remediation. Please investigate.
 
-    #             The diagnostics report below may be of some assistance.
+                The diagnostics report below may be of some assistance.
 
 
     # Remediation will fail
