@@ -49,9 +49,7 @@
       action:
         run_workflow_template:
           name: servicenow_auto_remediate_tls-issue_workflow
-          organization: Default
-          post_events: true
-          set_facts: true
+          organization: Demo2
           job_args:
             extra_vars:
               incident_sys_id: "{{ event.incident_sys_id }}"
