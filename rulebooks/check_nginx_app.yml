@@ -28,7 +28,7 @@
       action:
         run_job_template:
           name: nginx_diagnostics
-          organization: Default
+          organization: Demo2
           post_events: true
           job_args:
             extra_vars:
@@ -76,54 +76,54 @@
 
 
     # Remediation will fail
-    - name: Remediate nginx config error
-      condition: >
-          event.diagnostics is defined and
-          event.diagnostics.nginx_config_error is match(".*unknown directive.*", ignorecase=true)
-      action:
-        run_workflow_template:
-          name: servicenow_auto_remediate_config-issue_workflow
-          organization: Default
-          job_args:
-            extra_vars:
-              incident_sys_id: "{{ event.incident_sys_id }}"
-              target_host: "{{ event.target_host }}"
-              close_notes: | # on Success
-                ########################### EDA REMEDIATION STATUS UPDATE - SUCCESS ############################
+    # - name: Remediate nginx config error
+    #   condition: >
+    #       event.diagnostics is defined and
+    #       event.diagnostics.nginx_config_error is match(".*unknown directive.*", ignorecase=true)
+    #   action:
+    #     run_workflow_template:
+    #       name: servicenow_auto_remediate_config-issue_workflow
+    #       organization: Default
+    #       job_args:
+    #         extra_vars:
+    #           incident_sys_id: "{{ event.incident_sys_id }}"
+    #           target_host: "{{ event.target_host }}"
+    #           close_notes: | # on Success
+    #             ########################### EDA REMEDIATION STATUS UPDATE - SUCCESS ############################
 
-                The nginx configuration file contains an unknown directive, which indicates
-                a potential typo or unsupported instruction.
+    #             The nginx configuration file contains an unknown directive, which indicates
+    #             a potential typo or unsupported instruction.
 
-                EDA has successfully remediated.
-              work_notes: | # on Failure
-                ########################### EDA REMEDIATION STATUS UPDATE - FAIL ###############################
+    #             EDA has successfully remediated.
+    #           work_notes: | # on Failure
+    #             ########################### EDA REMEDIATION STATUS UPDATE - FAIL ###############################
 
-                The nginx configuration file contains an unknown directive, which indicates
-                a potential typo or unsupported instruction. Please verify the config for
-                syntax issues or misconfigured modules.
+    #             The nginx configuration file contains an unknown directive, which indicates
+    #             a potential typo or unsupported instruction. Please verify the config for
+    #             syntax issues or misconfigured modules.
 
-                EDA has not been successful in the attempted remediation. Please investigate.
+    #             EDA has not been successful in the attempted remediation. Please investigate.
 
-                The diagnostics report below may be of some assistance.
+    #             The diagnostics report below may be of some assistance.
 
 
     # No fix for this issue
-    - name: Not a fix for this issue - update service now
-      condition: event.diagnostics is defined # defined but no known match for existing issue
-      action:
-        run_job_template:
-          name: servicenow_incident_update
-          organization: Default
-          job_args:
-            extra_vars:
-              incident_sys_id: "{{ event.incident_sys_id }}"
-              work_notes: | # on Failure
-                ########################### EDA REMEDIATION STATUS ##################################
+    # - name: Not a fix for this issue - update service now
+    #   condition: event.diagnostics is defined # defined but no known match for existing issue
+    #   action:
+    #     run_job_template:
+    #       name: servicenow_incident_update
+    #       organization: Default
+    #       job_args:
+    #         extra_vars:
+    #           incident_sys_id: "{{ event.incident_sys_id }}"
+    #           work_notes: | # on Failure
+    #             ########################### EDA REMEDIATION STATUS ##################################
 
-                The reported issue is not currently covered in EDAs rulebook for autoremediation.
+    #             The reported issue is not currently covered in EDAs rulebook for autoremediation.
 
-                We recommend you investigate manually.
+    #             We recommend you investigate manually.
 
-                The diagnostics report below may be of some assistance.
+    #             The diagnostics report below may be of some assistance.
 
-                ####################################################################################################
+    #             ####################################################################################################
