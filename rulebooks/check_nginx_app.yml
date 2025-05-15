@@ -83,7 +83,7 @@
       action:
         run_workflow_template:
           name: servicenow_auto_remediate_config-issue_workflow
-          organization: Default
+          organization: Demo2
           job_args:
             extra_vars:
               incident_sys_id: "{{ event.incident_sys_id }}"
@@ -113,7 +113,7 @@
       action:
         run_job_template:
           name: servicenow_incident_update
-          organization: Default
+          organization: Demo2
           job_args:
             extra_vars:
               incident_sys_id: "{{ event.incident_sys_id }}"
